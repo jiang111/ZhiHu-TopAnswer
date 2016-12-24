@@ -24,6 +24,9 @@
         <activity
             android:name=".activity.AnswersActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AnswerDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

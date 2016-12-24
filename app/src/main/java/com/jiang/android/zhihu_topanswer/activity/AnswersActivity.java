@@ -1,5 +1,6 @@
 package com.jiang.android.zhihu_topanswer.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -235,6 +236,15 @@ public class AnswersActivity extends RxAppCompatActivity {
                 @Override
                 public void onItemClick(View v, int position) {
                     super.onItemClick(v, position);
+                    if (position == 0)
+                        return;
+                    Intent intent = new Intent(AnswersActivity.this, AnswerDetailActivity.class);
+                    intent.putExtra(AnswerDetailActivity.URL, mLists.get(position - 1).getUrl());
+                    intent.putExtra(AnswerDetailActivity.TITLE, title);
+                    intent.putExtra(AnswerDetailActivity.DETAIL, detail);
+
+                    startActivity(intent);
+
                 }
 
                 @Override

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/answers_detail_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:src="@drawable/back" />
+
+
+            <Space
+                android:id="@+id/answers_detail_right"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true" />
+
+            <TextView
+                android:id="@+id/answers_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toLeftOf="@+id/answers_detail_right"
+                android:layout_toRightOf="@+id/answers_detail_back"
+                android:gravity="left"
+                android:text="水电费的是"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <com.jiang.android.architecture.view.MultiStateView
+        android:id="@+id/activity_answers_detail_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:msv_emptyView="@layout/multystateview_empty_view"
+        app:msv_errorView="@layout/multystateview_error_view"
+        app:msv_loadingView="@layout/multystateview_loading_view"
+        app:msv_viewState="loading">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/activity_answers_detail_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:ellipsize="end"
+                    android:includeFontPadding="true"
+                    android:maxLines="3"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/_333333"
+                    android:textSize="14sp"
+                    tools:text="85K收藏，赞同才36K，你们这。。。。。。。。 - 声明，如果有微博或者公众号发表了我的这篇回答，请一定要把链接私信给我。我将会跟官方沟通维护我的权益。具体转载事项请看文尾。 --------------- - 这个问题我回答是最合适不过了！十个电影，每个电影都能…" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/activity_answers_detail_padding"
+                    android:background="@color/_f2f4f7" />
+
+                <WebView
+                    android:id="@+id/activity_answers_detail_webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </com.jiang.android.architecture.view.MultiStateView>
+
+</LinearLayout>
