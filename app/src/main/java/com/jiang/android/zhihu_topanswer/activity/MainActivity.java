@@ -1,7 +1,6 @@
 package com.jiang.android.zhihu_topanswer.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,13 +34,13 @@ public class MainActivity extends RxAppCompatActivity {
 
 
     private List<TopicModel> mLists = new ArrayList<>();
-    private List<Fragment> mFragments = new ArrayList<>();
+    private List<RecyclerViewFragment> mFragments = new ArrayList<>();
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private ImageView mSelectPop;
     private SelectPopupWindow popupWindow;
-    private CoordinatorLayout mRootLayout;
+    private TabAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,26 +53,29 @@ public class MainActivity extends RxAppCompatActivity {
     }
 
     private void initViewPager() {
-        TabAdapter adapter = new TabAdapter(getSupportFragmentManager(), mLists, mFragments);
-        mViewPager.setAdapter(adapter);
-        mViewPager.setOffscreenPageLimit(mLists.size());
-        //为TabLayout设置ViewPager
-        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mSelectPop.setClickable(true);
-        mSelectPop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initPopWindow();
-            }
-        });
+        if (adapter == null) {
+            adapter = new TabAdapter(getSupportFragmentManager(), mLists, mFragments);
+            mViewPager.setAdapter(adapter);
+            mViewPager.setOffscreenPageLimit(mLists.size());
+            //为TabLayout设置ViewPager
+            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            mTabLayout.setupWithViewPager(mViewPager);
+            mSelectPop.setClickable(true);
+            mSelectPop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initPopWindow();
+                }
+            });
+        } else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void initTabLayout() {
         mTabLayout = (TabLayout) findViewById(R.id.main_tablayout);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mSelectPop = (ImageView) findViewById(R.id.main_arrow);
-        mRootLayout = (CoordinatorLayout) findViewById(R.id.activity_main);
 
 
     }
@@ -85,7 +87,11 @@ public class MainActivity extends RxAppCompatActivity {
 
     private void initView() {
 
+        mLists.clear();
+        mFragments.clear();
+        mTabLayout.removeAllTabs();
         mLists.addAll(AllTopic.getInstance().getAllTopics(this));
+
 
         Observable.from(mLists)
                 .map(new Func1<TopicModel, TopicModel>() {
@@ -122,9 +128,9 @@ public class MainActivity extends RxAppCompatActivity {
     private static class TabAdapter extends FragmentPagerAdapter {
 
         private List<TopicModel> title;
-        private List<Fragment> views;
+        private List<RecyclerViewFragment> views;
 
-        public TabAdapter(FragmentManager fm, List<TopicModel> title, List<Fragment> views) {
+        public TabAdapter(FragmentManager fm, List<TopicModel> title, List<RecyclerViewFragment> views) {
             super(fm);
             this.title = title;
             this.views = views;
@@ -150,6 +156,11 @@ public class MainActivity extends RxAppCompatActivity {
 
 
     private void initPopWindow() {
+        initPopWindowReal();
+
+    }
+
+    private void initPopWindowReal() {
         if (popupWindow == null) {
             popupWindow = new SelectPopupWindow(this);
             popupWindow.setAdapter(new BaseAdapter() {
@@ -167,30 +178,14 @@ public class MainActivity extends RxAppCompatActivity {
 
                 @Override
                 public boolean clickable() {
-                    return false;
+                    return true;
                 }
 
                 @Override
-                public int getItemCount() {
-                    return mLists.size();
-                }
-            });
-            popupWindow.setDeleteAdapter(new BaseAdapter() {
-                @Override
-                public void onBindView(BaseViewHolder holder, int position) {
-
-                    holder.setText(R.id.item_pop_text, mLists.get(position).getName());
-
-                }
-
-                @Override
-                public int getLayoutID(int position) {
-                    return R.layout.item_pop_t;
-                }
-
-                @Override
-                public boolean clickable() {
-                    return false;
+                public void onItemClick(View v, int position) {
+                    super.onItemClick(v, position);
+                    choosePosition(position);
+                    popupWindow.dismiss();
                 }
 
                 @Override
@@ -202,5 +197,12 @@ public class MainActivity extends RxAppCompatActivity {
         }
         popupWindow.showAsDropDown(mToolbar);
     }
+
+    private void choosePosition(int position) {
+        mTabLayout.setScrollPosition(position,0,true);
+        mViewPager.setCurrentItem(position);
+
+    }
+
 
 }

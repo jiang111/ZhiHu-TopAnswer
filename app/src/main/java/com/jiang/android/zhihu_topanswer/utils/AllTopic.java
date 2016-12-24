@@ -24,6 +24,7 @@ public class AllTopic {
         synchronized (AllTopic.class) {
             if (mAllTopic == null) {
                 mAllTopic = new AllTopic();
+
             }
         }
         return mAllTopic;
@@ -65,4 +66,10 @@ public class AllTopic {
     }
 
 
+    public void saveTopics(Context context, List<TopicModel> list) {
+        SharePrefUtil.saveObj(context, MODEL_KEY, list);
+        mAllTopics.clear();
+        mAllTopics.addAll(list);
+
+    }
 }

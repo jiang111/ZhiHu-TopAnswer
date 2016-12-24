@@ -101,7 +101,7 @@ public class RecyclerViewFragment extends BaseFragment {
         });
     }
 
-    private void initData(final boolean needState, final int page) {
+    public void initData(final boolean needState, final int page) {
         if (needState) {
             mStateView.setViewState(MultiStateView.ViewState.LOADING);
         }

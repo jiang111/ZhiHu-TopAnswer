@@ -21,7 +21,6 @@ public class SelectPopupWindow extends PopupWindow {
 
     private final View mMenuView;
     private final RecyclerView mRecyclerView;
-    private final RecyclerView mRecyclerViewDelete;
 
     public SelectPopupWindow(Activity context) {
         super(context);
@@ -29,14 +28,15 @@ public class SelectPopupWindow extends PopupWindow {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.popwindow_layout, null);
         mRecyclerView = (RecyclerView) mMenuView.findViewById(R.id.pop_layout1);
-        mRecyclerViewDelete = (RecyclerView) mMenuView.findViewById(R.id.pop_layout2);
 
         this.setContentView(mMenuView);
         this.setWidth(ViewGroup.LayoutParams.FILL_PARENT);
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         this.setFocusable(true);
+
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         this.setBackgroundDrawable(dw);
+        setOutsideTouchable(false);
 
     }
 
@@ -46,13 +46,12 @@ public class SelectPopupWindow extends PopupWindow {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(adapter);
 
+
     }
 
-    public void setDeleteAdapter(BaseAdapter adapter) {
-        GridLayoutManager layoutManager = new GridLayoutManager(mRecyclerView.getContext(), 4);
-        layoutManager.setAutoMeasureEnabled(true);
-        mRecyclerViewDelete.setLayoutManager(layoutManager);
-        mRecyclerViewDelete.setAdapter(adapter);
+
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
     }
 
 
