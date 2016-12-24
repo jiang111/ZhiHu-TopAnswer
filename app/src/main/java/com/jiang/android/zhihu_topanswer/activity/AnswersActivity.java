@@ -144,6 +144,8 @@ public class AnswersActivity extends RxAppCompatActivity {
 
                 Element bodyAnswer = document.getElementById("zh-question-answer-wrap");
                 Elements bodys = bodyAnswer.select("div.zm-item-answer");
+                Element bodyWrapAnswer = document.getElementById("zh-question-collapsed-wrap");
+                bodys.addAll(bodyWrapAnswer.select("div.zm-item-answer.zm-item-expanded"));
 
                 if (bodys.iterator().hasNext()) {
                     Iterator iterator = bodys.iterator();
