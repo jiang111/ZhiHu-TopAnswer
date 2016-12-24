@@ -1,17 +1,20 @@
 package com.jiang.android.zhihu_topanswer.fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.jiang.android.architecture.adapter.BaseAdapter;
 import com.jiang.android.architecture.adapter.BaseViewHolder;
 import com.jiang.android.architecture.rxsupport.RxFragment;
+import com.jiang.android.architecture.utils.L;
 import com.jiang.android.zhihu_topanswer.R;
 import com.jiang.android.zhihu_topanswer.model.TopicAnswers;
 import com.trello.rxlifecycle.android.FragmentEvent;
@@ -70,18 +73,17 @@ public class RecyclerViewFragment extends RxFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initData();
+        initData(page);
         initRecyclerView();
     }
 
-    private void initData() {
+    private void initData(int page) {
         final String url = "https://www.zhihu.com/topic/" + mTopic + "/top-answers?page=" + page;
         Observable.create(new Observable.OnSubscribe<Document>() {
             @Override
             public void call(Subscriber<? super Document> subscriber) {
 
                 try {
-                    Log.i(TAG, "call: " + url);
                     subscriber.onNext(Jsoup.connect(url).timeout(5000).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").get());
                     subscriber.onCompleted();
                 } catch (IOException e) {
@@ -96,13 +98,45 @@ public class RecyclerViewFragment extends RxFragment {
                 List<TopicAnswers> list = new ArrayList<>();
                 Iterator iterator = contentLinks.iterator();
                 while (iterator.hasNext()) {
-                    Elements questionLinks = ((Element) iterator.next()).select("a.question_link");
-                    Element questionLink = questionLinks.iterator().next();
                     TopicAnswers answers = new TopicAnswers();
-                    answers.setTitle(questionLink.text());
-                    answers.setUrl("https://www.zhihu.com" + questionLink.attr("href"));
-                    Log.i(TAG, "call: " + answers.toString());
-                    list.add(answers);
+                    Element body = (Element) iterator.next();
+                    Elements questionLinks = body.select("a.question_link");
+                    if (questionLinks.iterator().hasNext()) {
+                        Element questionLink = questionLinks.iterator().next();
+                        answers.setTitle(questionLink.text());
+                        answers.setUrl("https://www.zhihu.com" + questionLink.attr("href"));
+                    }
+
+
+                    Elements votes = body.select("a.zm-item-vote-count.js-expand.js-vote-count");
+                    if (votes.size() > 0) {
+                        if (votes.iterator().hasNext()) {
+                            Element aVotes = votes.iterator().next();
+                            answers.setVote(aVotes.text());
+                        }
+                    }
+
+                    Elements divs = body.select("div.zh-summary.summary.clearfix");
+
+                    String descBody = divs.text();
+                    if (descBody.length() > 4) {
+                        descBody = descBody.substring(0, descBody.length() - 4);
+                    }
+                    answers.setBody(descBody);
+                    if (divs.size() > 0) {
+                        if (divs.iterator().hasNext()) {
+                            Element aDiv = divs.iterator().next();
+
+                            Element img = aDiv.children().first();
+                            if (img.tagName().equals("img")) {
+                                String imgUrl = img.attr("src");
+                                answers.setImg(imgUrl);
+                            }
+                        }
+                    }
+                    if (!TextUtils.isEmpty(answers.getTitle()) && !TextUtils.isEmpty(answers.getUrl())) {
+                        list.add(answers);
+                    }
                 }
                 return list;
             }
@@ -123,7 +157,7 @@ public class RecyclerViewFragment extends RxFragment {
 
                     @Override
                     public void onNext(List<TopicAnswers> s) {
-                        Log.i(TAG, "onNext: " + s);
+                        L.i(TAG, "onNext: " + s);
                         mLists.addAll(s);
                     }
                 });
@@ -132,30 +166,44 @@ public class RecyclerViewFragment extends RxFragment {
     }
 
     private void initRecyclerView() {
+        if (mRecyclerView.getAdapter() == null) {
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(new BaseAdapter() {
-            @Override
-            public void onBindView(BaseViewHolder holder, int position) {
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            mRecyclerView.setAdapter(new BaseAdapter() {
+                @Override
+                public void onBindView(BaseViewHolder holder, int position) {
 
-                holder.setText(R.id.item_main_tv, mLists.get(position).getTitle());
-            }
+                    TopicAnswers answers = mLists.get(position);
+                    holder.setText(R.id.item_fr_top_title, answers.getTitle())
+                            .setText(R.id.item_fr_top_body, answers.getBody())
+                            .setText(R.id.item_fr_top_vote, answers.getVote() + " 赞同");
+                    SimpleDraweeView simpleDraweeView = holder.getView(R.id.item_fr_top_desc);
+                    if (TextUtils.isEmpty(answers.getImg())) {
+                        simpleDraweeView.setVisibility(View.GONE);
+                    } else {
+                        simpleDraweeView.setVisibility(View.VISIBLE);
+                        simpleDraweeView.setImageURI(Uri.parse(answers.getImg()));
+                    }
+                }
 
-            @Override
-            public int getLayoutID(int position) {
-                return R.layout.item_main;
-            }
+                @Override
+                public int getLayoutID(int position) {
+                    return R.layout.item_fragment;
+                }
 
-            @Override
-            public boolean clickable() {
-                return false;
-            }
+                @Override
+                public boolean clickable() {
+                    return false;
+                }
 
-            @Override
-            public int getItemCount() {
-                return mLists.size();
-            }
-        });
+                @Override
+                public int getItemCount() {
+                    return mLists.size();
+                }
+            });
+        } else {
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 
 

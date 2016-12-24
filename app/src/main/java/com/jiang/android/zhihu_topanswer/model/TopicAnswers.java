@@ -8,6 +8,24 @@ public class TopicAnswers {
     private String url;
     private String title;
     private String img;
+    private String vote;
+    private String body;
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getVote() {
+        return vote;
+    }
+
+    public void setVote(String vote) {
+        this.vote = vote;
+    }
 
     public String getUrl() {
         return url;
@@ -35,9 +53,6 @@ public class TopicAnswers {
 
     @Override
     public String toString() {
-        return "TopicAnswers{" +
-                "url='" + url + '\'' +
-                ", title='" + title + '\'' +
-                '}';
+        return "url:" + url + " :title:" + title + " :img:" + img + " :vote:" + vote + " :body:" + body;
     }
 }

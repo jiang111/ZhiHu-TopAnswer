@@ -1,4 +1,4 @@
-package com.jiang.android.zhihu_topanswer;
+package com.jiang.android.zhihu_topanswer.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
 import com.jiang.android.architecture.rxsupport.RxAppCompatActivity;
+import com.jiang.android.zhihu_topanswer.R;
 import com.jiang.android.zhihu_topanswer.fragment.RecyclerViewFragment;
 import com.jiang.android.zhihu_topanswer.model.TopicModel;
 import com.jiang.android.zhihu_topanswer.utils.AllTopic;
@@ -58,7 +59,7 @@ public class MainActivity extends RxAppCompatActivity {
 
     private void initView() {
 
-        mLists.addAll(AllTopic.getInstance().getTopics(0, 1));
+        mLists.addAll(AllTopic.getInstance().getTopics(0, 2));
         for (TopicModel item : mLists) {
             mFragments.add(RecyclerViewFragment.newInstance(item.getTopic()));
             mTabLayout.addTab(mTabLayout.newTab().setText(item.getName()));
