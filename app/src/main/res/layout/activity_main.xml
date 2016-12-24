@@ -20,16 +20,32 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways" />
 
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/main_tablayout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
-            app:tabIndicatorColor="@color/colorPrimaryDark"
-            app:tabSelectedTextColor="@color/colorPrimaryDark"
-            app:tabTextColor="@color/_9B9B9B" />
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
+            <ImageView
+                android:id="@+id/main_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/arrow_down" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/main_tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_toLeftOf="@+id/main_arrow"
+
+                app:tabIndicatorColor="@color/colorPrimaryDark"
+                app:tabSelectedTextColor="@color/colorPrimaryDark"
+                app:tabTextColor="@color/_9B9B9B" />
+
+
+        </RelativeLayout>
     </android.support.design.widget.AppBarLayout>
 
 
