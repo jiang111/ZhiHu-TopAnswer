@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/answers_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:src="@drawable/back" />
+
+
+            <Space
+                android:id="@+id/answers_right"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true" />
+
+            <TextView
+                android:id="@+id/answers_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:layout_marginLeft="10dp"
+                android:layout_toLeftOf="@+id/answers_right"
+                android:layout_toRightOf="@+id/answers_back"
+                android:gravity="left"
+                android:text="水电费的是"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/activity_answers_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/_f2f4f7">
+
+        <com.jiang.android.architecture.view.MultiStateView
+            android:id="@+id/activity_answers_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:msv_emptyView="@layout/multystateview_empty_view"
+            app:msv_errorView="@layout/multystateview_error_view"
+            app:msv_loadingView="@layout/multystateview_loading_view"
+            app:msv_viewState="loading">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/activity_answers_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.jiang.android.architecture.view.MultiStateView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

@@ -1,34 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="15dp"
     android:background="@drawable/bgselect_ffffff"
     android:orientation="vertical"
     android:padding="15dp">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/item_fr_top_desc"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginBottom="10dp"
-        android:scaleType="centerCrop" />
-
     <TextView
-        android:id="@+id/item_fr_top_title"
+        android:id="@+id/item_fr_answers_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="@color/_212121"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        tools:text="哪些素质很重要，却是读书学不来的" />
+        android:layout_marginTop="5dp"
+        android:text="作者:AABBDD"
+        android:textColor="@color/_939da4"
+        android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/item_fr_top_body"
+        android:id="@+id/item_fr_answers_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -40,7 +30,7 @@
         tools:text="85K收藏，赞同才36K，你们这。。。。。。。。 - 声明，如果有微博或者公众号发表了我的这篇回答，请一定要把链接私信给我。我将会跟官方沟通维护我的权益。具体转载事项请看文尾。 --------------- - 这个问题我回答是最合适不过了！十个电影，每个电影都能…" />
 
     <TextView
-        android:id="@+id/item_fr_top_vote"
+        android:id="@+id/item_fr_answers_vote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

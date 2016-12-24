@@ -1,5 +1,6 @@
 package com.jiang.android.zhihu_topanswer.fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.jiang.android.architecture.utils.L;
 import com.jiang.android.architecture.view.LoadMoreRecyclerView;
 import com.jiang.android.architecture.view.MultiStateView;
 import com.jiang.android.zhihu_topanswer.R;
+import com.jiang.android.zhihu_topanswer.activity.AnswersActivity;
 import com.jiang.android.zhihu_topanswer.model.TopicAnswers;
 import com.trello.rxlifecycle.android.FragmentEvent;
 
@@ -162,6 +164,7 @@ public class RecyclerViewFragment extends BaseFragment {
                         }
                     }
                     if (!TextUtils.isEmpty(answers.getTitle()) && !TextUtils.isEmpty(answers.getUrl())) {
+                        L.i(TAG, answers.toString());
                         list.add(answers);
                     }
                 }
@@ -245,7 +248,17 @@ public class RecyclerViewFragment extends BaseFragment {
 
                 @Override
                 public boolean clickable() {
-                    return false;
+                    return true;
+                }
+
+                @Override
+                public void onItemClick(View v, int position) {
+                    super.onItemClick(v, position);
+
+                    Intent intent = new Intent(getActivity(), AnswersActivity.class);
+                    intent.putExtra(AnswersActivity.QUESTION_URL, mLists.get(position ).getUrl());
+                    startActivity(intent);
+
                 }
 
                 @Override

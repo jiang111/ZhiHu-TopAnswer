@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/item_fr_answers_top_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/_212121"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="哪些素质很重要，却是读书学不来的" />
+
+        <TextView
+            android:id="@+id/item_fr_answers_top_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:includeFontPadding="true"
+            android:maxLines="3"
+            android:textColor="@color/_333333"
+            android:textSize="14sp"
+            tools:text="85K收藏，赞同才36K，你们这。。。。。。。。 - 声明，如果有微博或者公众号发表了我的这篇回答，请一定要把链接私信给我。我将会跟官方沟通维护我的权益。具体转载事项请看文尾。 --------------- - 这个问题我回答是最合适不过了！十个电影，每个电影都能…" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/_f2f4f7">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/item_fr_answers_top_count"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:gravity="center|left"
+            android:text="1000个回答" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
