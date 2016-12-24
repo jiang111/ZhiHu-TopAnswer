@@ -43,7 +43,7 @@
                 android:layout_marginLeft="10dp"
                 android:lines="1"
                 android:ellipsize="marquee"
-                android:layout_toLeftOf="@+id/answers_detail_right"
+                android:layout_toLeftOf="@+id/answers_right"
                 android:layout_toRightOf="@+id/answers_detail_back"
                 android:gravity="left"
                 android:text="水电费的是"
