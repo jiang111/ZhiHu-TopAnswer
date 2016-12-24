@@ -120,7 +120,7 @@ public class AnswersActivity extends RxAppCompatActivity {
             public void call(Subscriber<? super Document> subscriber) {
 
                 try {
-                    subscriber.onNext(Jsoup.connect(url).timeout(5000).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").get());
+                    subscriber.onNext(Jsoup.connect(url + "#zh-question-collapsed-wrap").timeout(5000).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").get());
                     subscriber.onCompleted();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -226,7 +226,7 @@ public class AnswersActivity extends RxAppCompatActivity {
                         holder.setText(R.id.item_fr_answers_top_title, title)
                                 .setVisibility(R.id.item_fr_answers_top_body, TextUtils.isEmpty(detail) ? BaseViewHolder.GONE : BaseViewHolder.VISIBLE)
                                 .setText(R.id.item_fr_answers_top_body, Html.fromHtml(detail).toString())
-                                .setText(R.id.item_fr_answers_top_count, mLists.size() + "个回答(只抽取前十个)");
+                                .setText(R.id.item_fr_answers_top_count, mLists.size() + "个回答(只抽取前" + mLists.size() + "个)");
 
                     } else {
                         AnswersModel answers = mLists.get(position - 1);

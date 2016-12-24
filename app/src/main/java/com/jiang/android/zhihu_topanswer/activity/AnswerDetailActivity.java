@@ -1,11 +1,12 @@
 package com.jiang.android.zhihu_topanswer.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
     private TextView mDetail;
     private String detail;
     private View mPadding;
+    private ImageView mWeb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,23 +59,23 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
         mUrl = "https://www.zhihu.com" + getIntent().getExtras().getString(URL);
         title = getIntent().getExtras().getString(TITLE);
         detail = getIntent().getExtras().getString(DETAIL);
-        initView();
-    }
-
-    private void initView() {
         mTitle = (TextView) findViewById(R.id.answers_detail_title);
         mBack = (ImageView) findViewById(R.id.answers_detail_back);
         mWebView = (WebView) findViewById(R.id.activity_answers_detail_webview);
         mStateView = (MultiStateView) findViewById(R.id.activity_answers_detail_state);
         mDetail = (TextView) findViewById(R.id.activity_answers_detail_detail);
-        mPadding = (View) findViewById(R.id.activity_answers_detail_padding);
+        mPadding = findViewById(R.id.activity_answers_detail_padding);
+        mWeb = (ImageView) findViewById(R.id.answers_right);
+        initView();
+    }
+
+    private void initView() {
+
         mWebView.getSettings().setDefaultTextEncodingName("UTF-8");
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mWebView.getSettings().setSupportZoom(false);
         mWebView.getSettings().setBuiltInZoomControls(false);
-        mWebView.getSettings().setTextSize(WebSettings.TextSize.LARGER);
-//        mWebView.getSettings().setBlockNetworkImage(false);
         mTitle.setText(title);
         if (TextUtils.isEmpty(detail)) {
             mPadding.setVisibility(View.GONE);
@@ -83,6 +85,15 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
             mDetail.setVisibility(View.VISIBLE);
             mDetail.setText(Html.fromHtml(detail).toString());
         }
+        mWeb.setClickable(true);
+        mWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(mUrl));
+                startActivity(intent);
+            }
+        });
         mBack.setClickable(true);
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,9 +155,6 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
                             imgElement.attr("src", result);
                         }
                         html = docu.outerHtml();
-//                        html = html.replace("<noscript>", "<!--<noscript> ");
-//                        html = html.replace("</noscript>", "</noscript>--> ");
-//                        html = html.replace("src=\"//", "src=\"https://");
                         return html;
 
                     }
@@ -166,8 +174,6 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
                         if (mStateView.getViewState() != MultiStateView.ViewState.CONTENT) {
                             mStateView.setViewState(MultiStateView.ViewState.CONTENT);
                         }
-
-
                         mWebView.loadDataWithBaseURL("http://www.zhihu.com", bodyHtml, "text/html", "utf-8", null);
                     }
 

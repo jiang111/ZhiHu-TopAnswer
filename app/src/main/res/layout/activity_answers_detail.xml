@@ -26,11 +26,14 @@
                 android:src="@drawable/back" />
 
 
-            <Space
-                android:id="@+id/answers_detail_right"
+            <ImageView
+                android:id="@+id/answers_right"
                 android:layout_width="@dimen/back_icon_width"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true" />
+                android:layout_height="@dimen/back_icon_width"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="14dp"
+                android:src="@drawable/btn_export_normal" />
 
             <TextView
                 android:id="@+id/answers_detail_title"
