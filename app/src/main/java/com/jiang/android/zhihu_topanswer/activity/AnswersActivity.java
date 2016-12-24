@@ -1,6 +1,7 @@
 package com.jiang.android.zhihu_topanswer.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -54,6 +55,7 @@ public class AnswersActivity extends RxAppCompatActivity {
     private TextView mTitle;
     private ImageView mBack;
     private LinearLayoutManager linearLayoutManager;
+    private ImageView mWeb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class AnswersActivity extends RxAppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_answers_rv);
         mRefresh = (SwipeRefreshLayout) findViewById(R.id.activity_answers_refresh);
         mStateView = (MultiStateView) findViewById(R.id.activity_answers_state);
+        mWeb = (ImageView) findViewById(R.id.answers_right);
         mQuestionUrl = getIntent().getStringExtra(QUESTION_URL);
         initView();
     }
@@ -87,6 +90,15 @@ public class AnswersActivity extends RxAppCompatActivity {
             }
         });
 
+        mWeb.setClickable(true);
+        mWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(mQuestionUrl));
+                startActivity(intent);
+            }
+        });
         initData(true);
     }
 
@@ -210,8 +222,10 @@ public class AnswersActivity extends RxAppCompatActivity {
 
                     if (position == 0) {
                         holder.setText(R.id.item_fr_answers_top_title, title)
+                                .setVisibility(R.id.item_fr_answers_top_body, TextUtils.isEmpty(detail) ? BaseViewHolder.GONE : BaseViewHolder.VISIBLE)
                                 .setText(R.id.item_fr_answers_top_body, Html.fromHtml(detail).toString())
                                 .setText(R.id.item_fr_answers_top_count, mLists.size() + "个回答(只抽取前十个)");
+
                     } else {
                         AnswersModel answers = mLists.get(position - 1);
                         holder.setText(R.id.item_fr_answers_author, TextUtils.isEmpty(answers.getAuthor()) ? "匿名" : answers.getAuthor())

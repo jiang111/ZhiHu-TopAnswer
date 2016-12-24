@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -71,6 +72,7 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mWebView.getSettings().setSupportZoom(false);
         mWebView.getSettings().setBuiltInZoomControls(false);
+        mWebView.getSettings().setTextSize(WebSettings.TextSize.LARGER);
 //        mWebView.getSettings().setBlockNetworkImage(false);
         mTitle.setText(title);
         if (TextUtils.isEmpty(detail)) {

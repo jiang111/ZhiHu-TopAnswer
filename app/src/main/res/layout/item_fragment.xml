@@ -36,7 +36,7 @@
         android:includeFontPadding="true"
         android:maxLines="3"
         android:textColor="@color/_333333"
-        android:textSize="14sp"
+        android:textSize="15sp"
         tools:text="85K收藏，赞同才36K，你们这。。。。。。。。 - 声明，如果有微博或者公众号发表了我的这篇回答，请一定要把链接私信给我。我将会跟官方沟通维护我的权益。具体转载事项请看文尾。 --------------- - 这个问题我回答是最合适不过了！十个电影，每个电影都能…" />
 
     <TextView
@@ -46,6 +46,6 @@
         android:layout_marginTop="5dp"
         android:text="206 赞同"
         android:textColor="@color/_939da4"
-        android:textSize="12sp" />
+        android:textSize="13sp" />
 
 </LinearLayout>

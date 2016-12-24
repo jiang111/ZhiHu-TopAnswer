@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 
 /**
  * Created by jiang on 15/9/16.
@@ -148,7 +147,6 @@ public class LoadMoreRecyclerView extends RecyclerView {
         }
     }
 
-    private static final String TAG = "LoadMoreRecyclerView";
 
     private int findMax(int[] lastPositions) {
         int max = lastPositions[0];
@@ -160,17 +158,8 @@ public class LoadMoreRecyclerView extends RecyclerView {
         return max;
     }
 
-
-    public OnLoadMoreListener getOnLoadMoreListener() {
-        return onLoadMoreListener;
-    }
-
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
         this.onLoadMoreListener = onLoadMoreListener;
-    }
-
-    public int getLoadmore_state() {
-        return loadmore_state;
     }
 
     public void setLoadmore_state(int loadmore_state) {

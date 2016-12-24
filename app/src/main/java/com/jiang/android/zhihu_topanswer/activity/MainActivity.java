@@ -82,7 +82,7 @@ public class MainActivity extends RxAppCompatActivity {
 
     private void initTitle() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("首页");
+        mToolbar.setTitle(getString(R.string.app_name));
     }
 
     private void initView() {
