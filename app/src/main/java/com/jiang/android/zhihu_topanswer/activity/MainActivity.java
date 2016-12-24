@@ -41,7 +41,7 @@ public class MainActivity extends RxAppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         TabAdapter adapter = new TabAdapter(getSupportFragmentManager(), mLists, mFragments);
         mViewPager.setAdapter(adapter);
-//        mViewPager.setOffscreenPageLimit(mLists.size());
+        mViewPager.setOffscreenPageLimit(mLists.size());
         //为TabLayout设置ViewPager
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -59,7 +59,7 @@ public class MainActivity extends RxAppCompatActivity {
 
     private void initView() {
 
-        mLists.addAll(AllTopic.getInstance().getTopics(0, 2));
+        mLists.addAll(AllTopic.getInstance().getAllTopics());
         for (TopicModel item : mLists) {
             mFragments.add(RecyclerViewFragment.newInstance(item.getTopic()));
             mTabLayout.addTab(mTabLayout.newTab().setText(item.getName()));

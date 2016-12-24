@@ -3,8 +3,8 @@ package com.jiang.android.zhihu_topanswer.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +13,9 @@ import android.view.ViewGroup;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jiang.android.architecture.adapter.BaseAdapter;
 import com.jiang.android.architecture.adapter.BaseViewHolder;
-import com.jiang.android.architecture.rxsupport.RxFragment;
 import com.jiang.android.architecture.utils.L;
+import com.jiang.android.architecture.view.LoadMoreRecyclerView;
+import com.jiang.android.architecture.view.MultiStateView;
 import com.jiang.android.zhihu_topanswer.R;
 import com.jiang.android.zhihu_topanswer.model.TopicAnswers;
 import com.trello.rxlifecycle.android.FragmentEvent;
@@ -40,15 +41,18 @@ import rx.schedulers.Schedulers;
  * Created by jiang on 2016/12/23.
  */
 
-public class RecyclerViewFragment extends RxFragment {
+public class RecyclerViewFragment extends BaseFragment {
 
     private static final String TAG = "RecyclerViewFragment";
 
-    private int page = 1;
+    public static final int PAGE_START = 1;
+    private int mPage = PAGE_START;
     private static final java.lang.String BUNDLE_ID = "bundle_id";
     private int mTopic;
-    private RecyclerView mRecyclerView;
+    private LoadMoreRecyclerView mRecyclerView;
     private List<TopicAnswers> mLists = new ArrayList<>();
+    private SwipeRefreshLayout mRefresh;
+    private MultiStateView mStateView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,7 +62,9 @@ public class RecyclerViewFragment extends RxFragment {
             mTopic = arguments.getInt(BUNDLE_ID);
         }
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_rv);
+        mRecyclerView = (LoadMoreRecyclerView) view.findViewById(R.id.fragment_rv);
+        mRefresh = (SwipeRefreshLayout) view.findViewById(R.id.fragment_refresh);
+        mStateView = (MultiStateView) view.findViewById(R.id.fragment_state);
         return view;
     }
 
@@ -73,11 +79,32 @@ public class RecyclerViewFragment extends RxFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initData(page);
-        initRecyclerView();
+        initView();
     }
 
-    private void initData(int page) {
+    private void initView() {
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                initData(false, mPage = PAGE_START);
+            }
+        });
+        mRecyclerView.setCanLOADMORE(true);
+        mRecyclerView.setOnLoadMoreListener(new LoadMoreRecyclerView.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                L.i("onLoadMore");
+                initData(false, ++mPage);
+
+            }
+        });
+    }
+
+    private void initData(final boolean needState, final int page) {
+        if (needState) {
+            mStateView.setViewState(MultiStateView.ViewState.LOADING);
+        }
         final String url = "https://www.zhihu.com/topic/" + mTopic + "/top-answers?page=" + page;
         Observable.create(new Observable.OnSubscribe<Document>() {
             @Override
@@ -144,21 +171,46 @@ public class RecyclerViewFragment extends RxFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<TopicAnswers>>() {
+
+
                     @Override
                     public void onCompleted() {
 
+                        if (mStateView.getViewState() != MultiStateView.ViewState.CONTENT) {
+                            mStateView.setViewState(MultiStateView.ViewState.CONTENT);
+                        }
+                        if (page == 1) {
+                            mRefresh.setRefreshing(false);
+                        } else {
+                            mRecyclerView.setLoadmore_state(LoadMoreRecyclerView.STATE_FINISH_LOADMORE);
+
+                        }
                         initRecyclerView();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        if (needState) {
+                            mStateView.setViewState(MultiStateView.ViewState.ERROR);
+                        }
+                        if (page == 1) {
+                            mRefresh.setRefreshing(false);
+                        } else {
+                            mRecyclerView.setLoadmore_state(LoadMoreRecyclerView.STATE_FINISH_LOADMORE);
+                        }
+                        if (mPage > 1) {
+                            mPage--;
+                        }
                     }
 
                     @Override
                     public void onNext(List<TopicAnswers> s) {
-                        L.i(TAG, "onNext: " + s);
-                        mLists.addAll(s);
+                        if (page == 1) {
+                            mLists.clear();
+                            mLists.addAll(s);
+                        } else {
+                            mLists.addAll(s);
+                        }
                     }
                 });
 
@@ -206,5 +258,19 @@ public class RecyclerViewFragment extends RxFragment {
         }
     }
 
+    @Override
+    protected void onFirstUserVisible() {
+        super.onFirstUserVisible();
+        onUserVisible();
+    }
 
+    @Override
+    protected void onUserVisible() {
+        super.onUserVisible();
+        if (getActivity() == null)
+            return;
+        if (mLists == null || mLists.size() == 0) {
+            initData(true, mPage = PAGE_START);
+        }
+    }
 }
