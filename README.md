@@ -25,7 +25,7 @@
 ###后续
 >* 后续app还会增加热门收藏等功能。喜欢的可以关注一下
 
-###还有拿些不错的库
+###还有哪些不错的库
 >* 收集Android你不知道的那些小技巧:https://github.com/jiang111/awesome-android-tips
 >* 通过RecyclerView实现的联系人: https://github.com/jiang111/IndexRecyclerView
 >* 用于学习RxJava操作符的APP: https://github.com/jiang111/RxJavaApp
