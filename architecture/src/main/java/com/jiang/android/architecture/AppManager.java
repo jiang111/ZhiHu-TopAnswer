@@ -84,6 +84,12 @@ public class AppManager {
         }
     }
 
+    public void removeActivity(Activity activity) {
+        if (activity != null) {
+            activityStack.remove(activity);
+        }
+    }
+
     /**
      * 结束指定类名的Activity
      */
