@@ -5,7 +5,6 @@
 ###下载：
 >* fir.im http://fir.im/d2sc  (fir上下载个数有限制，若无法下载，请到[release](https://github.com/jiang111/ZhiHu-TopAnswer/releases)下载)
 >* [relase 下载](https://github.com/jiang111/ZhiHu-TopAnswer/releases)
->* [点我直接下载](https://github-cloud.s3.amazonaws.com/releases/77258118/19b0c120-ca8d-11e6-8ce6-217d19adde2a.apk?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAISTNZFOVBIJMK3TQ%2F20161225%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20161225T023451Z&X-Amz-Expires=300&X-Amz-Signature=9490ba019d4bb482493ca5f984fbafcebf923d6ed45c7a54f93985ebf80af498&X-Amz-SignedHeaders=host&actor_id=3346368&response-content-disposition=attachment%3B%20filename%3Dapp-release.apk&response-content-type=application%2Fvnd.android.package-archive)
 
 ###展示:
 <img src="https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/art/1.png" width=400  alt="" />
