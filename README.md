@@ -5,6 +5,7 @@
 ###下载：
 >* fir.im http://fir.im/d2sc  (fir上下载个数有限制，若无法下载，请到[release](https://github.com/jiang111/ZhiHu-TopAnswer/releases)下载)
 >* [relase 下载](https://github.com/jiang111/ZhiHu-TopAnswer/releases)
+>* [点我直接下载](https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/release/app-release.apk)
 
 ###展示:
 <img src="https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/art/1.png" width=400  alt="" />
