@@ -22,7 +22,7 @@
                 android:layout_height="@dimen/back_icon_width"
                 android:layout_centerVertical="true"
                 android:padding="10dp"
-                android:src="@drawable/back" />
+                android:src="@drawable/ic_back" />
 
 
             <ImageView

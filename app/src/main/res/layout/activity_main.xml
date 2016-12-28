@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+<android.support.design.widget.CoordinatorLayout
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,39 +27,21 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
 
-            <ImageView
-                android:id="@+id/main_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:src="@drawable/arrow_down" />
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/main_tablayout"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_toLeftOf="@+id/main_arrow"
-
-                app:tabIndicatorColor="@color/colorPrimaryDark"
-                app:tabSelectedTextColor="@color/colorPrimaryDark"
-                app:tabTextColor="@color/_9B9B9B" />
-
-
-        </RelativeLayout>
     </android.support.design.widget.AppBarLayout>
-
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+    <FrameLayout
+        android:id="@+id/id_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
+
 
 </android.support.design.widget.CoordinatorLayout>
+
+    <com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationView
+        android:id="@+id/main_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
