@@ -7,10 +7,15 @@
 
 
 
-
+    <com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationView
+        android:id="@+id/main_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true" />
 <android.support.design.widget.CoordinatorLayout
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
+    android:layout_above="@+id/main_bottom_nav"
     android:layout_height="match_parent"
     tools:context="com.jiang.android.zhihu_topanswer.activity.MainActivity">
 
@@ -39,9 +44,5 @@
 
 </android.support.design.widget.CoordinatorLayout>
 
-    <com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationView
-        android:id="@+id/main_bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true" />
+
 </RelativeLayout>

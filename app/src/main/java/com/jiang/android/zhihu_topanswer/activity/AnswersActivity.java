@@ -4,21 +4,26 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.jiang.android.architecture.adapter.BaseAdapter;
 import com.jiang.android.architecture.adapter.BaseViewHolder;
 import com.jiang.android.architecture.rxsupport.RxAppCompatActivity;
 import com.jiang.android.architecture.view.MultiStateView;
 import com.jiang.android.zhihu_topanswer.R;
+import com.jiang.android.zhihu_topanswer.db.Collection;
 import com.jiang.android.zhihu_topanswer.model.AnswersModel;
+import com.jiang.android.zhihu_topanswer.utils.CollectionUtils;
 import com.trello.rxlifecycle.android.ActivityEvent;
 
 import org.jsoup.Jsoup;
@@ -34,6 +39,7 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -52,61 +58,54 @@ public class AnswersActivity extends RxAppCompatActivity {
     private MultiStateView mStateView;
     private String title;
     private String detail;
-    private TextView mTitle;
-    private ImageView mBack;
     private LinearLayoutManager linearLayoutManager;
-    private ImageView mWeb;
+    private Toolbar mToolBar;
+    private boolean isSaved; //已经收藏了
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers);
-        mTitle = (TextView) findViewById(R.id.answers_title);
-        mBack = (ImageView) findViewById(R.id.answers_back);
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_answers_rv);
         mRefresh = (SwipeRefreshLayout) findViewById(R.id.activity_answers_refresh);
         mStateView = (MultiStateView) findViewById(R.id.activity_answers_state);
-        mWeb = (ImageView) findViewById(R.id.answers_right);
+        mToolBar = (Toolbar) findViewById(R.id.activity_answers_toolbar);
         mQuestionUrl = getIntent().getStringExtra(QUESTION_URL);
         initView();
+        initStateView();
     }
 
 
     private void initView() {
         setTitle(false);
-        mBack.setClickable(true);
-        mBack.setOnClickListener(new View.OnClickListener() {
+
+
+        mToolBar.setNavigationIcon(ContextCompat.getDrawable(this,R.drawable.ic_back));
+        setSupportActionBar(mToolBar);
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AnswersActivity.this.finish();
+                onBackPressed();
             }
         });
+
+
         mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
             @Override
             public void onRefresh() {
-
                 initData(false);
             }
         });
 
-        mWeb.setClickable(true);
-        mWeb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(mQuestionUrl));
-                startActivity(intent);
-            }
-        });
         initData(true);
     }
 
     private void setTitle(boolean show) {
         if (show) {
-            mTitle.setText(title);
+            mToolBar.setTitle(title);
         } else {
-            mTitle.setText("");
+            mToolBar.setTitle("");
         }
     }
 
@@ -284,5 +283,89 @@ public class AnswersActivity extends RxAppCompatActivity {
             mRecyclerView.getAdapter().notifyDataSetChanged();
         }
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_answer, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+
+        CollectionUtils.getInstance().contailItem(mQuestionUrl).compose(this.<Collection>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Collection>() {
+                    @Override
+                    public void call(Collection model) {
+                        isSaved = true;
+                        menu.findItem(R.id.save).setIcon(ContextCompat.getDrawable(AnswersActivity.this,R.drawable.ic_save));
+                    }
+                });
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save:
+                if(mLists.size()==0)
+                    return true;
+                saveCurrentItem();
+                if(isSaved) {
+                    item.setIcon(ContextCompat.getDrawable(AnswersActivity.this, R.drawable.ic_save));
+                }else{
+                    item.setIcon(ContextCompat.getDrawable(AnswersActivity.this, R.drawable.ic_save_normal));
+                }
+
+                break;
+            case R.id.web_look:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(mQuestionUrl));
+                startActivity(intent);
+                break;
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveCurrentItem() {
+        if(isSaved){
+            CollectionUtils.getInstance().removeItem(mQuestionUrl);
+            toast("取消收藏成功");
+            isSaved = false;
+        }else{
+            isSaved = true;
+            Collection model  = new Collection();
+            model.setId(System.currentTimeMillis());
+            model.setTitle(title);
+            model.setDetail(detail);
+            model.setType(CollectionUtils.TYPE_ANSWERS);
+            model.setUrl(mQuestionUrl);
+            CollectionUtils.getInstance().saveItem(model);
+            toast("收藏成功");
+
+        }
+
+
+    }
+
+    private void initStateView() {
+        LinearLayout error  = (LinearLayout) mStateView.findViewById(R.id.error_root_layout);
+        error.setClickable(true);
+        error.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initData(true);
+            }
+        });
+    }
+
 
 }

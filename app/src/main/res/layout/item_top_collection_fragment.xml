@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/_f1f1f1"
+    android:layout_height="50dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="我的收藏"
+        android:textColor="@color/colorPrimaryDark"
+        android:paddingLeft="15dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:layout_height="match_parent" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/collection_clear_all"
+        android:textSize="16sp"
+        android:layout_alignParentRight="true"
+        android:text="全部清除"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:layout_marginRight="15dp"
+         />
+
+
+
+
+</RelativeLayout>

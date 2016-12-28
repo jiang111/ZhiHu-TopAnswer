@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jiang.android.architecture.rxsupport.RxAppCompatActivity;
@@ -42,15 +46,14 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
     public static final String DETAIL = "detail";
     private String mUrl;
     private WebView mWebView;
-    private TextView mTitle;
-    private ImageView mBack;
     private MultiStateView mStateView;
     private String title;
     private String bodyHtml;
     private TextView mDetail;
     private String detail;
     private View mPadding;
-    private ImageView mWeb;
+    private boolean isSaved;
+    private Toolbar mToolBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,24 +62,43 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
         mUrl = "https://www.zhihu.com" + getIntent().getExtras().getString(URL);
         title = getIntent().getExtras().getString(TITLE);
         detail = getIntent().getExtras().getString(DETAIL);
-        mTitle = (TextView) findViewById(R.id.answers_detail_title);
-        mBack = (ImageView) findViewById(R.id.answers_detail_back);
+        mToolBar = (Toolbar) findViewById(R.id.activity_answers_detail_toolbar);
         mWebView = (WebView) findViewById(R.id.activity_answers_detail_webview);
         mStateView = (MultiStateView) findViewById(R.id.activity_answers_detail_state);
         mDetail = (TextView) findViewById(R.id.activity_answers_detail_detail);
         mPadding = findViewById(R.id.activity_answers_detail_padding);
-        mWeb = (ImageView) findViewById(R.id.answers_right);
+        initStateView();
         initView();
     }
 
+    private void initStateView() {
+        LinearLayout error  = (LinearLayout) mStateView.findViewById(R.id.error_root_layout);
+        error.setClickable(true);
+        error.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initData(true);
+            }
+        });
+    }
+
     private void initView() {
+        mToolBar.setTitle(title);
+        mToolBar.setNavigationIcon(ContextCompat.getDrawable(this,R.drawable.ic_back));
+        setSupportActionBar(mToolBar);
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         mWebView.getSettings().setDefaultTextEncodingName("UTF-8");
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mWebView.getSettings().setSupportZoom(false);
         mWebView.getSettings().setBuiltInZoomControls(false);
-        mTitle.setText(title);
+
         if (TextUtils.isEmpty(detail)) {
             mPadding.setVisibility(View.GONE);
             mDetail.setVisibility(View.GONE);
@@ -85,22 +107,6 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
             mDetail.setVisibility(View.VISIBLE);
             mDetail.setText(Html.fromHtml(detail).toString());
         }
-        mWeb.setClickable(true);
-        mWeb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(mUrl));
-                startActivity(intent);
-            }
-        });
-        mBack.setClickable(true);
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AnswerDetailActivity.this.finish();
-            }
-        });
 
 
         initData(true);
@@ -174,6 +180,9 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
                         if (mStateView.getViewState() != MultiStateView.ViewState.CONTENT) {
                             mStateView.setViewState(MultiStateView.ViewState.CONTENT);
                         }
+                        if(bodyHtml.length()>100000){
+                            toast("网页加载中,请耐心等待");
+                        }
                         mWebView.loadDataWithBaseURL("http://www.zhihu.com", bodyHtml, "text/html", "utf-8", null);
                     }
 
@@ -199,4 +208,33 @@ public class AnswerDetailActivity extends RxAppCompatActivity {
                     }
                 });
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_answer_detail, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.web_look:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(mUrl));
+                startActivity(intent);
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
