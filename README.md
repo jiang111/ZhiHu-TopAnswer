@@ -2,6 +2,9 @@
 
 解析知乎上最受欢迎的热门话题中点赞数比较高的答案。
 
+###版本更新:
+>* v1.1更新，新增收藏功能
+
 ###下载：
 >* fir.im http://fir.im/d2sc  (fir上下载个数有限制，若无法下载，请到[release](https://github.com/jiang111/ZhiHu-TopAnswer/releases)下载)
 >* [relase 下载](https://github.com/jiang111/ZhiHu-TopAnswer/releases)
