@@ -1,34 +1,34 @@
-#![](https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/app/src/main/res/mipmap-mdpi/ic_launcher.png)    知乎热门榜 
+# ![](https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/app/src/main/res/mipmap-mdpi/ic_launcher.png)    知乎热门榜 
 
 解析知乎上最受欢迎的热门话题中点赞数比较高的答案。
 
-###版本更新:
+### 版本更新:
 >* v1.1更新，新增收藏功能
 
-###下载：
+### 下载：
 >* fir.im http://fir.im/d2sc  (fir上下载个数有限制，若无法下载，请到[release](https://github.com/jiang111/ZhiHu-TopAnswer/releases)下载)
 >* [relase 下载](https://github.com/jiang111/ZhiHu-TopAnswer/releases)
 >* [点我直接下载](https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/release/app-release.apk)
 
-###展示:
+### 展示:
 <img src="https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/art/1.png" width=400  alt="" />
 <img src="https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/art/2.png" width=400  alt="" />
 <br />
 <img src="https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/art/3.png" width=400  alt="" />
 <img src="https://raw.githubusercontent.com/jiang111/ZhiHu-TopAnswer/master/art/4.png" width=400  alt="" />
 
-###数据是如何获取的
+### 数据是如何获取的
 >* 首页话题的数据来自:http://www.zhihufans.com/index.php
 >* 其他数据来自Jsoup对知乎网站数据的解析
 >* 如有侵权,请联系我删除
 
-###为什么会有这个APP
+### 为什么会有这个APP
 >* 看到知乎上很多热门话题回答都很有意思，无意中又看到了[知乎封神榜](http://www.zhihufans.com/index.php)这个网站，于是决定写个APP 用于平时手机浏览
 
-###后续
+### 后续
 >* 后续app还会增加热门收藏等功能。喜欢的可以关注一下
 
-###还有哪些不错的库
+### 还有哪些不错的库
 >* 收集Android你不知道的那些小技巧:https://github.com/jiang111/awesome-android-tips
 >* 通过RecyclerView实现的联系人: https://github.com/jiang111/IndexRecyclerView
 >* 用于学习RxJava操作符的APP: https://github.com/jiang111/RxJavaApp
